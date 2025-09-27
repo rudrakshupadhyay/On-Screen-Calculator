@@ -1,0 +1,77 @@
+body{
+    background-color: rgb(231, 231, 231);
+    margin: 0;
+    padding: 0;
+}
+*{
+    box-sizing: border-box;
+}
+.calculator{
+    height: 600px;
+    width: 500px;
+    background-color: rgb(110, 110, 110);
+    border-radius: 20px;
+    margin: 5px auto;
+    padding: 20px;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+}
+.screen{
+    background-color: rgb(209, 207, 207);
+    height: 150px;
+    width: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+}
+.button{
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+.clear{
+    background-color: rgb(230, 119, 119);
+    height: 75px;
+    width: 50%;
+    border-radius: 5px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+}
+.delete{
+    background-color: rgb(122, 130, 245);
+    height: 75px;
+    width: 50%;
+    border-radius: 5px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+}
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    flex-grow: 1;
+}
+.number{
+    height: 75px;
+    flex: 1 1 calc(25% - 10px);
+    border-radius: 5px;
+    background-color: aliceblue;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+}
