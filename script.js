@@ -8,78 +8,74 @@ function multiply(a,b) {
     return a*b;    
 }
 function divide(a,b) {
-    if(b === 0) return NaN;
     return a/b;
 }
-function operate(num1,num2,operation) {
+function operate(a,b,operation) {
+    let num1 = Number(a);
+    let num2 = Number(b);
     if(operation === "+") return add(num1,num2);
     if(operation === "-") return subtract(num1,num2);
     if(operation === "×") return multiply(num1,num2);
     if(operation === "÷") return divide(num1,num2);
+    else return null;
 }
-let digit = ["0","1","2","3","4","5","6","7","8","9","."];
+let digit = ["0","1","2","3","4","5","6","7","8","9"];
 let operators = ["+", "-", "×", "÷"];  // use the displayed symbols
-let screen = document.querySelector(".expr");
+let expr = document.querySelector(".expr");
 let oldexpr = document.querySelector(".oldexpr");
 let clear = document.querySelector(".clear");
 let back_space = document.querySelector(".delete");
 let number = document.querySelectorAll(".number");
-let num = NaN;
-let Output = false;
+
+let operand1 = "";
+let operand2 = "";
+let currOperation = null;
+let screen_empty = false;
 number.forEach(key => {
     key.addEventListener("click",() => {
         let keyVal = key.textContent;
-        if(digit.includes(keyVal)){
-            if (Output) {
-                Output = false;
-                clear.click();
-            }
-            if (screen.textContent === "0") {
-                screen.textContent = "";
-            }
-            if (keyVal === "." && screen.textContent.includes(".")) return;
-            if(screen.textContent.length < 11){
-                screen.textContent += keyVal;
-            }
-        }
-        else if (operators.includes(keyVal)) {
-            if(isNaN(num)){ 
-                num = Number(screen.textContent);
-                screen.textContent = "0";
-            }
-            else if(!isNaN(num) && oldexpr.textContent === ""){
-                screen.textContent = "0";
-            }
-            else{
-                let num2 = Number(screen.textContent);
-                num = operate(num,num2,oldexpr.textContent.slice(-1));
-                screen.textContent = "0";
-                oldexpr.textContent = String(num) + keyVal;
-                return;
-            }
-            oldexpr.textContent += String(num) + keyVal;
-        }
-        else{
-            if(!isNaN(num)){
-                let num2 = Number(screen.textContent);
-                num = operate(num,num2,oldexpr.textContent.slice(-1));
-                let ans = String(num);
-                if(ans.length < 11) screen.textContent = ans;
-                else screen.textContent = "0";
-                oldexpr.textContent = "";
-                Output = true;
-            }
-        }
+        if(digit.includes(keyVal)) append(keyVal);
+        else if(operators.includes(keyVal)) setoperation(keyVal);
+        else if(keyVal === "=") evalute();
     })
 })
-clear.addEventListener("click", () => {
-    screen.textContent = "0";
-    oldexpr.textContent = "";
-    num = NaN;
-})
-back_space.addEventListener("click",() => {
-    screen.textContent = screen.textContent.slice(0,-1);
-    if(screen.textContent === ""){
-        screen.textContent = "0";
+clear.addEventListener("click", () => clearScreen());
+back_space.addEventListener("click",() => deleteNumber());
+function deleteNumber() {
+    expr.textContent = expr.textContent.slice(0,-1);
+}
+function evalute() {
+    if(currOperation === null || screen_empty) return;
+    if(currOperation === "÷" && expr.textContent === "0"){
+        alert("You can't divide by 0!");
+        return;
     }
-})
+    operand2 = expr.textContent;
+    ans = `${operate(operand1,operand2,currOperation)}`;
+    if(ans.length > 9) ans = "Overflow";
+    expr.textContent = ans;
+    oldexpr.textContent = `${operand1} ${currOperation} ${operand2} =`;
+    currOperation = null; 
+}
+function setoperation(keyVal) {
+    if(currOperation != null) evalute();
+    operand1 = expr.textContent;
+    currOperation = keyVal;
+    oldexpr.textContent = `${operand1} ${currOperation}`
+    screen_empty = true;
+}
+function append(keyVal){
+    if(expr.textContent == "0" || screen_empty) reset();
+    expr.textContent += keyVal; 
+}
+function reset() {
+    expr.textContent = "";
+    screen_empty = false;
+}
+function clearScreen() {
+    expr.textContent = "0";
+    oldexpr.textContent = "";
+    operand1 = "";
+    operand2 = "";
+    currOperation = null;
+}
