@@ -31,12 +31,20 @@ let operand1 = "";
 let operand2 = "";
 let currOperation = null;
 let screen_empty = false;
+let need_clear = false;
 number.forEach(key => {
     key.addEventListener("click",() => {
         let keyVal = key.textContent;
+        if(need_clear){
+            clear.click();
+            need_clear = false;
+        }
         if(digit.includes(keyVal)) append(keyVal);
         else if(operators.includes(keyVal)) setoperation(keyVal);
-        else if(keyVal === "=") evalute();
+        else if(keyVal === "="){
+            evalute();
+            need_clear = true;
+        }
     })
 })
 clear.addEventListener("click", () => clearScreen());
