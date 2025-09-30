@@ -39,7 +39,7 @@ number.forEach(key => {
             clear.click();
             need_clear = false;
         }
-        if(digit.includes(keyVal)) append(keyVal);
+        if(digit.includes(keyVal) || keyVal === ".") append(keyVal);
         else if(operators.includes(keyVal)) setoperation(keyVal);
         else if(keyVal === "="){
             evalute();
@@ -73,7 +73,8 @@ function setoperation(keyVal) {
     screen_empty = true;
 }
 function append(keyVal){
-    if(expr.textContent == "0" || screen_empty) reset();
+    if((expr.textContent == "0" && !(keyVal == "."))|| screen_empty) reset();
+    if(keyVal == "." && expr.textContent.includes(".")) return;
     expr.textContent += keyVal; 
 }
 function reset() {
